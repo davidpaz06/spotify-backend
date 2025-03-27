@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id       Int      @id @default(autoincrement()) // Identificador único
+  username String   @unique
+  password String
+  playlists UserPlaylist[]
+  createdPlaylists Playlist[] @relation("UserCreatedPlaylists")
+}
+
+model Artist {
+  artist_id          Int      @id @default(autoincrement())
+  artist_name        String
+  artist_description String?
+  albums             Album[]
+  songs              Song[]
+}
+
+model Album {
+  album_id    Int      @id @default(autoincrement())
+  album_name  String
+  release_date DateTime
+  artist_id   Int
+  artist      Artist   @relation(fields: [artist_id], references: [artist_id])
+  songs       Song[]
+}
+
+model Song {
+  song_id      Int      @id @default(autoincrement())
+  song_name    String
+  artist_id    Int
+  album_id     Int
+  streams      Int
+  song_length  Int
+  is_explicit  Boolean
+  artist       Artist   @relation(fields: [artist_id], references: [artist_id])
+  album        Album    @relation(fields: [album_id], references: [album_id])
+  playlists    PlaylistSong[]
+}
+
+model Playlist {
+  playlist_id     Int      @id @default(autoincrement())
+  playlist_name   String
+  created_by      Int
+  playlist_length Int
+  creator         User     @relation("UserCreatedPlaylists", fields: [created_by], references: [user_id])
+  songs           PlaylistSong[]
+  users           UserPlaylist[]
+}
+
+model UserPlaylist {
+  user_playlist_id Int     @id @default(autoincrement())
+  user_id          Int
+  playlist_id      Int
+  user             User    @relation(fields: [user_id], references: [user_id])
+  playlist         Playlist @relation(fields: [playlist_id], references: [playlist_id])
+}
+
+model PlaylistSong {
+  playlist_song_id Int     @id @default(autoincrement())
+  playlist_id      Int
+  song_id          Int
+  playlist         Playlist @relation(fields: [playlist_id], references: [playlist_id])
+  song             Song     @relation(fields: [song_id], references: [song_id])
+}
