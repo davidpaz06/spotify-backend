@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
+import { AuthService } from 'src/auth/auth.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as argon2 from 'argon2';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private auth: AuthService,
+  ) {}
 
   async create(user: CreateUserDto) {
     try {
@@ -51,6 +55,10 @@ export class UserService {
       throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
     }
 
-    return user;
+    const tokens = await this.auth.tokenize(user);
+
+    return {
+      ...tokens,
+    };
   }
 }

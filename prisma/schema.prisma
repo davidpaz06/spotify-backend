@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  user_id       Int      @id @default(autoincrement()) // Identificador único
+  user_id       Int      @id @default(autoincrement()) 
   username String   @unique
   password String
   playlists UserPlaylist[]

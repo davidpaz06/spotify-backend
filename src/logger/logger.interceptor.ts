@@ -13,7 +13,7 @@ export class LoggerInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const { method, url, body, headers } = req;
 
-    console.log('URL:', url);
+    console.log('\nURL:', url);
     console.log(`Incoming Request: ${method} ${url}`);
     console.log('Request Headers:', headers);
     console.log('Request Body:', body);
