@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm start",
+  "buildCommand": "prisma generate && npm run build",
   "installCommand": "npm install",
   "builds": [
     {
