@@ -9,6 +9,8 @@ import {
   HttpCode,
   UseGuards,
   UseInterceptors,
+  InternalServerErrorException,
+  HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,9 +32,13 @@ export class UserController {
 
   @Post('create')
   @HttpCode(201)
-  create(@Body() user: CreateUserDto) {
-    this.userService.create(user);
-    return this.login(user);
+  async create(@Body() user: CreateUserDto) {
+    try {
+      await this.userService.create(user);
+      return this.login(user);
+    } catch (error) {
+      throw error;
+    }
   }
 
   @Post('login')

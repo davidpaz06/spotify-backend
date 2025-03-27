@@ -15,6 +15,20 @@ export class UserService {
 
   async create(user: CreateUserDto) {
     try {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { username: user.username },
+      });
+
+      if (!user.username || !user.password) {
+        throw new HttpException(
+          'Username and password are required',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
+      if (existingUser) {
+        throw new HttpException('User already exists', HttpStatus.CONFLICT);
+      }
       const hashedPassword = await argon2.hash(user.password, {
         type: argon2.argon2id,
         memoryCost: 2 ** 10,
@@ -30,9 +44,12 @@ export class UserService {
       });
       return newUser;
     } catch (error) {
-      if (error.code === 'P2002') {
-        throw new HttpException('User already exists', HttpStatus.CONFLICT);
+      // Si el error ya es una instancia de HttpException, propágalo
+      if (error instanceof HttpException) {
+        throw error;
       }
+
+      // Si no, lanza un error genérico
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
