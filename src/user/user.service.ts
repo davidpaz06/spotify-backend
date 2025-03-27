@@ -44,12 +44,10 @@ export class UserService {
       });
       return newUser;
     } catch (error) {
-      // Si el error ya es una instancia de HttpException, propágalo
       if (error instanceof HttpException) {
         throw error;
       }
 
-      // Si no, lanza un error genérico
       throw new HttpException(
         'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
