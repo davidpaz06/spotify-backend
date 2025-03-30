@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
+import { SpotifyAuthService } from './spotify-auth.service';
 
 @Module({
   imports: [
@@ -10,7 +11,7 @@ import { AuthGuard } from './auth.guard';
       signOptions: { expiresIn: '7d' },
     }),
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AuthGuard, SpotifyAuthService],
   exports: [JwtModule, AuthService],
 })
 export class AuthModule {}

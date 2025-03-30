@@ -16,7 +16,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { LoggerInterceptor } from 'src/logger/logger.interceptor';
+import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
 
 @Controller('user')
 @UseInterceptors(LoggerInterceptor)

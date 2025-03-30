@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { LoggerInterceptor } from './interceptors/logger/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
     credentials: true,
   });
+  app.useGlobalInterceptors(new LoggerInterceptor());
   await app.listen(process.env.PORT ?? 3000);
 
   console.log(`Server is running on port ${process.env.PORT ?? 3000}`);
