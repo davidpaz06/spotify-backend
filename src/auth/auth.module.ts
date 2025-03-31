@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { SpotifyAuthService } from './spotify-auth.service';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -13,5 +14,6 @@ import { SpotifyAuthService } from './spotify-auth.service';
   ],
   providers: [AuthService, AuthGuard, SpotifyAuthService],
   exports: [JwtModule, AuthService],
+  controllers: [AuthController],
 })
 export class AuthModule {}

@@ -23,9 +23,9 @@ export class ArtistController {
     return this.artistService.findArtistByName(artist);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.artistService.findOne(+id);
+  @Get('me')
+  getMe() {
+    return this.artistService.getMe();
   }
 
   @Patch(':id')

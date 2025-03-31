@@ -24,12 +24,6 @@ import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Get('greet')
-  @HttpCode(200)
-  Greet() {
-    return 'Hello from user controller!';
-  }
-
   @Post('create')
   @HttpCode(201)
   async create(@Body() user: CreateUserDto) {

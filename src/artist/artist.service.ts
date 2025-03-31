@@ -36,8 +36,24 @@ export class ArtistService {
     };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} artist`;
+  async getMe() {
+    const url = 'https://api.spotify.com/v1/me';
+    try {
+      const accessToken = await this.spotifyAuthService.getAccessToken();
+      if (!accessToken) {
+        throw new Error('Failed to fetch access token');
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      throw new Error(`Error fetching data: ${error.message}`);
+    }
   }
 
   update(id: number, updateArtistDto: UpdateArtistDto) {
