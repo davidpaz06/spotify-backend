@@ -11,11 +11,11 @@ import { map } from 'rxjs/operators';
 export class FormatResponseInterceptor<T> implements NestInterceptor<T> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) => ({
+      map((content) => ({
         statusCode: context.switchToHttp().getResponse().statusCode,
         message: 'Request was successful',
         timestamp: new Date().toISOString(),
-        data,
+        content,
       })),
     );
   }

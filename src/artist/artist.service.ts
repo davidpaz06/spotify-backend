@@ -11,10 +11,9 @@ export class ArtistService {
     return 'This action adds a new artist';
   }
 
-  async findArtistByName(artist) {
+  async findArtistByName(artist, accessToken) {
     const query = encodeURIComponent(`artist:${artist}`);
     const url = `https://api.spotify.com/v1/search?q=${query}&type=artist&limit=1`;
-    const accessToken = await this.spotifyAuthService.getAccessToken();
 
     if (!accessToken) {
       throw new Error('Failed to fetch access token');
@@ -54,13 +53,5 @@ export class ArtistService {
     } catch (error) {
       throw new Error(`Error fetching data: ${error.message}`);
     }
-  }
-
-  update(id: number, updateArtistDto: UpdateArtistDto) {
-    return `This action updates a #${id} artist`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} artist`;
   }
 }

@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
 import { AuthService } from 'src/auth/auth.service';
+import { SpotifyAuthService } from 'src/auth/spotify-auth.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as argon2 from 'argon2';
 
@@ -11,6 +12,7 @@ export class UserService {
   constructor(
     private prisma: PrismaService,
     private auth: AuthService,
+    private spotifyAuth: SpotifyAuthService,
   ) {}
 
   async create(user: CreateUserDto) {
@@ -71,9 +73,11 @@ export class UserService {
     }
 
     const tokens = await this.auth.tokenize(user);
+    const spotifyAccessToken = await this.spotifyAuth.getAccessToken();
 
     return {
       ...tokens,
+      spotifyAccessToken,
     };
   }
 }

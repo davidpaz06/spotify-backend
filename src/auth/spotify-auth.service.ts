@@ -14,9 +14,13 @@ export class SpotifyAuthService {
     try {
       const url = 'https://accounts.spotify.com/api/token';
       const params = new URLSearchParams();
-      params.append('grant_type', 'authorization_code');
-      params.append('code', process.env.SPOTIFY_AUTH_CODE!);
-      params.append('redirect_uri', process.env.SPOTIFY_REDIRECT_URI!);
+      if (process.env.SPOTIFY_AUTH_CODE) {
+        params.append('grant_type', 'authorization_code');
+        params.append('code', process.env.SPOTIFY_AUTH_CODE);
+        params.append('redirect_uri', process.env.SPOTIFY_REDIRECT_URI!);
+      } else {
+        params.append('grant_type', 'client_credentials');
+      }
 
       const response = await axios.post(url, params, {
         headers: {
