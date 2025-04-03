@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
   UseGuards,
   UseInterceptors,
   InternalServerErrorException,
@@ -15,21 +16,18 @@ import { SongService } from './song.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
+import { AuthGuard } from 'src/auth/auth.guard';
 
-@Controller('song')
+@Controller('track')
 @UseInterceptors(LoggerInterceptor)
+@UseGuards(AuthGuard)
 export class SongController {
   constructor(private readonly songService: SongService) {}
 
-  @Post()
-  @Get('getToken')
-  getSongs() {
-    return this.songService.getToken();
-  }
-
-  @Get(':artist')
-  findAll(@Param('artist') artist: string) {
-    return this.songService.findAll(artist);
+  @Get(':track')
+  findAll(@Param('track') track: string, @Req() request: any) {
+    const spotifyAccessToken = request.spotifyAccessToken;
+    return this.songService.findAll(track, spotifyAccessToken);
   }
 
   @Get(':id')
