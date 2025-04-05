@@ -41,4 +41,10 @@ export class UserController {
     const res = this.userService.login(user);
     return res;
   }
+
+  @Get('')
+  @HttpCode(201)
+  baseResponse() {
+    return { message: 'User base response' };
+  }
 }
