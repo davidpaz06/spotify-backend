@@ -1,21 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerInterceptor } from './interceptors/logger/logger.interceptor';
-import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: true, //[
-    //   'https://spotify-backend-production-20df.up.railway.app',
-    //   'http://localhost:3000',
-    //   'exp://192.168.1.34:19000',
-    // ],
+    origin: [
+      'https://spotify-backend-production-20df.up.railway.app',
+      'http://localhost:3000',
+      'exp://192.168.1.34:19000',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
     credentials: true,
   });
-  app.use(morgan('combined'));
   app.useGlobalInterceptors(new LoggerInterceptor());
   await app.listen(process.env.PORT ?? 3000);
 
