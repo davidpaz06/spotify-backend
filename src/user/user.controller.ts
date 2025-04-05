@@ -4,18 +4,14 @@ import {
   Post,
   Body,
   Patch,
-  Param,
   Delete,
   HttpCode,
-  UseGuards,
   UseInterceptors,
   InternalServerErrorException,
-  HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '../auth/auth.guard';
 import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
 
 @Controller('user')
@@ -42,7 +38,7 @@ export class UserController {
     return res;
   }
 
-  @Get('')
+  @Get('health')
   @HttpCode(201)
   userHealth() {
     return { message: 'User is ok' };
