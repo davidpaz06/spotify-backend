@@ -21,7 +21,7 @@ export class PlaylistService {
         data: {
           playlist_name: createPlaylistDto.playlist_name,
           created_by: createPlaylistDto.created_by,
-          playlist_length: createPlaylistDto.playlist_length ?? 0,
+          playlist_length: 0,
         },
       });
 

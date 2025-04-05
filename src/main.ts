@@ -5,10 +5,11 @@ import { LoggerInterceptor } from './interceptors/logger/logger.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: [
-      'https://spotify-backend-production-20df.up.railway.app',
-      'http://localhost:3000',
-    ],
+    origin: true, //[
+    //   'https://spotify-backend-production-20df.up.railway.app',
+    //   'http://localhost:3000',
+    //   'exp://192.168.1.34:19000',
+    // ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
     credentials: true,
