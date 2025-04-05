@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerInterceptor } from './interceptors/logger/logger.interceptor';
+import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,7 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
     credentials: true,
   });
+  app.use(morgan('combined'));
   app.useGlobalInterceptors(new LoggerInterceptor());
   await app.listen(process.env.PORT ?? 3000);
 
