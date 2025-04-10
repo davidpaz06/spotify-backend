@@ -26,7 +26,6 @@ model Artist {
   artist_name        String
   artist_description String?
   albums             Album[]
-  songs              Song[]
 }
 
 model Album {
@@ -35,19 +34,13 @@ model Album {
   release_date DateTime
   artist_id   Int
   artist      Artist   @relation(fields: [artist_id], references: [artist_id])
-  songs       Song[]
 }
 
 model Song {
-  song_id      Int      @id @default(autoincrement())
-  song_name    String
-  artist_id    Int
-  album_id     Int
-  streams      Int
-  song_length  Int
-  is_explicit  Boolean
-  artist       Artist   @relation(fields: [artist_id], references: [artist_id])
-  album        Album    @relation(fields: [album_id], references: [album_id])
+  song_id      String      @id 
+  song_data Json
+
+
   playlists    PlaylistSong[]
 }
 
@@ -72,7 +65,9 @@ model UserPlaylist {
 model PlaylistSong {
   playlist_song_id Int     @id @default(autoincrement())
   playlist_id      Int
-  song_id          Int
+  song_id          String
   playlist         Playlist @relation(fields: [playlist_id], references: [playlist_id])
   song             Song     @relation(fields: [song_id], references: [song_id])
+
+  @@unique([playlist_id, song_id])
 }

@@ -22,36 +22,62 @@ import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  @Post()
-  create(@Body() createPlaylistDto: CreatePlaylistDto) {
-    return this.playlistService.create(createPlaylistDto);
+  @Post('create')
+  @HttpCode(201)
+  createPlaylist(@Body() createPlaylistDto: CreatePlaylistDto) {
+    return this.playlistService.createPlaylist(createPlaylistDto);
   }
 
-  @Get()
-  findAll() {
-    return this.playlistService.findUserPlaylist();
+  @Get('/user/:user')
+  @HttpCode(200)
+  findUserPlaylist(@Param('user') userId: string) {
+    return this.playlistService.findUserPlaylist(+userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.playlistService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
+  @Patch(':id/rename')
+  @HttpCode(200)
+  updatePlaylistName(
     @Param('id') id: string,
     @Body() updatePlaylistDto: UpdatePlaylistDto,
   ) {
-    return this.playlistService.update(+id, updatePlaylistDto);
+    return this.playlistService.updatePlaylistName(+id, updatePlaylistDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playlistService.remove(+id);
+  @Patch(':id/add')
+  @HttpCode(200)
+  addToPlaylist(
+    @Param('id') id: string,
+    @Body() updatePlaylistDto: UpdatePlaylistDto,
+  ) {
+    return this.playlistService.addToPlaylist(+id, updatePlaylistDto);
+  }
+
+  @Delete(':id/remove')
+  @HttpCode(200)
+  removeFromPlaylist(@Param('id') id: string, @Body() body: any) {
+    const { song } = body;
+    const { id: songId, name: songName, duration: songDuration } = song;
+    return this.playlistService.removeFromPlaylist(
+      +id,
+      songId,
+      songName,
+      songDuration,
+    );
+  }
+
+  @Delete('delete/:id')
+  @HttpCode(200)
+  deletePlaylist(@Param('id') id: string) {
+    return this.playlistService.deletePlaylist(+id);
   }
 
   @Get('health')
+  @HttpCode(200)
   playlistHealth() {
-    return { status: 'Playlist is OK' };
+    try {
+      return { status: 'Playlist is OK' };
+    } catch (error) {
+      return { status: 'Playlist is not OK', error: error.message };
+    }
   }
 }

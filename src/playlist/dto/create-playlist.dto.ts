@@ -10,5 +10,5 @@ export class CreatePlaylistDto {
   @IsOptional()
   @IsInt()
   @Min(0)
-  playlist_length?: number; // Opcional, ya que puede calcularse automáticamente
+  playlist_length?: number;
 }

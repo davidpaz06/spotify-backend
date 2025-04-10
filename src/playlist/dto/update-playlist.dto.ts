@@ -1,4 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePlaylistDto } from './create-playlist.dto';
+import { IsInt, IsObject, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePlaylistDto extends PartialType(CreatePlaylistDto) {}
+export class UpdatePlaylistDto {
+  @IsOptional()
+  @IsString()
+  playlist_name: string;
+
+  @IsOptional()
+  @IsObject()
+  song: {
+    id: string;
+    artist: string;
+    album: string;
+    name: string;
+    duration: number;
+    preview: string;
+    image: string;
+  };
+}

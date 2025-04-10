@@ -51,6 +51,7 @@ export class ArtistService {
       popularity: fetch.data.artists.items[0].popularity,
       genres: fetch.data.artists.items[0].genres,
       topSongs: topSongs.data.tracks.map((song) => ({
+        id: song.id,
         name: song.name,
         preview: song.external_urls.spotify,
         image: song.album.images[0].url,

@@ -20,8 +20,9 @@ export class SongService {
       });
 
       return response.data.tracks.items.map((song) => ({
-        album: song.album.name,
+        id: song.id,
         artist: song.artists[0].name,
+        album: song.album.name,
         name: song.name,
         duration: song.duration_ms,
         preview: song.external_urls.spotify,

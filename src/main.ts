@@ -8,7 +8,6 @@ async function bootstrap() {
     origin: [
       'https://spotify-backend-production-20df.up.railway.app',
       'http://localhost:3000',
-      'exp://192.168.1.34:19000',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     optionsSuccessStatus: 204,
