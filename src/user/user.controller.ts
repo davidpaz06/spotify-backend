@@ -8,6 +8,7 @@ import {
   HttpCode,
   UseInterceptors,
   InternalServerErrorException,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -36,6 +37,12 @@ export class UserController {
   login(@Body() user: CreateUserDto) {
     const res = this.userService.login(user);
     return res;
+  }
+
+  @Delete()
+  @HttpCode(201)
+  delete(@Query('username') username: string) {
+    return this.userService.delete(username);
   }
 
   @Get('health')

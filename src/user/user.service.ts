@@ -80,4 +80,22 @@ export class UserService {
       spotifyAccessToken,
     };
   }
+
+  async delete(user: string) {
+    try {
+      const deletedUser = await this.prisma.user.delete({
+        where: { username: user },
+      });
+      return deletedUser;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        'Internal server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
